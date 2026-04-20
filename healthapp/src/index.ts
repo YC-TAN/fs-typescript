@@ -12,14 +12,13 @@ app.get('/hello', (_req, res) => {
 
 app.get('/bmi', (req, res) => {
     
-    const height = req.query.height as string;
-    const weight = req.query.weight as string;
+    const {height, weight} = req.query;
 
     if (!height || !weight) {
-        return res.status(400).json({ error: "parameters missing" });
+        return res.status(400).json({ error: "malformatted parameters" });
     }
 
-    if (isNotNumber(height) || isNotNumber(weight)) {
+    if (typeof height !== 'string' || isNotNumber(height) || typeof weight !== 'string' || isNotNumber(weight)) {
         return res.status(400).json({error: "malformatted parameters"});
     }
 
@@ -71,7 +70,7 @@ app.post('/exercises', (req, res) => {
 
 });
 
-const PORT = 3003;
+const PORT = 3000;
 app.listen(PORT, () => {
     console.log(`Server running at port ${PORT}`);
 });
