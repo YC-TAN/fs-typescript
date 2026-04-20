@@ -36,7 +36,7 @@ const description: Record<number, string> = {
   3: "Perfect"
 };
 
-const calculateExercises = (exerciseHrs: number[], target: number): Result => {
+export const calculateExercises = (exerciseHrs: number[], target: number): Result => {
     const periodLength = exerciseHrs.length;
     const trainingDays = exerciseHrs.filter(d => d > 0).length;
     if (periodLength <= 0 ) throw new Error('no training record found');
