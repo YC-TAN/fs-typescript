@@ -1,4 +1,4 @@
-const isNotNumber = (arg: string): boolean => {
+const isNotNumber = (arg: unknown): boolean => {
     return isNaN(Number(arg));
 };
 

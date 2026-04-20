@@ -4,7 +4,7 @@ import { calculateExercises } from './bmi/exerciseCalculator.ts';
 import isNotNumber from './bmi/utils.ts';
 
 const app = express();
-app.use(express.json())
+app.use(express.json());
 
 app.get('/hello', (_req, res) => {
     return res.send("Hello Full Stack!");
@@ -41,10 +41,14 @@ app.get('/bmi', (req, res) => {
     
 });
 
+interface ExerciseRequestBody {
+    daily_exercises: unknown[],
+    target: unknown
+}
+
 app.post('/exercises', (req, res) => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const daily_exercises = req.body.daily_exercises;
-    const target = req.body.target;
+    const body = req.body as ExerciseRequestBody;
+    const { daily_exercises, target } = body;
 
     if (!daily_exercises || !target) {
         return res.status(400).json({ error: "parameters missing" });
