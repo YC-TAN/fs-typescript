@@ -1,5 +1,5 @@
-const isNotNumber = (arg: any): boolean => {
-    return isNaN(Number(arg))
-}
+const isNotNumber = (arg: string): boolean => {
+    return isNaN(Number(arg));
+};
 
 export default isNotNumber;
