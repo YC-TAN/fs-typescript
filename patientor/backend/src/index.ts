@@ -1,6 +1,7 @@
 import express from 'express';
 import diagnosisRouter from './routes/diagnoses.ts';
 import patientRouter from './routes/patients.ts';
+import { errorMiddleware } from './middleware.ts';
 
 const app = express();
 
@@ -13,6 +14,8 @@ app.get('/api/ping', (_req, res) => {
 
 app.use('/api/diagnoses', diagnosisRouter);
 app.use('/api/patients', patientRouter);
+
+app.use(errorMiddleware);
 
 const PORT = 3001;
 app.listen(PORT, () => {
