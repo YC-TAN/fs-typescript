@@ -1,4 +1,4 @@
-import type {PatientWithoutSsn, PatientWithoutId, Patient} from '../types.ts';
+import type {PatientWithoutSsn, NewPatientEntry, Patient} from '../types.ts';
 import patients from '../data/patients.ts';
 import { v4 as uuid } from 'uuid';
 
@@ -13,7 +13,7 @@ const getAllPatientsWithoutSsn = (): PatientWithoutSsn[] => {
     }));
 };
 
-const create = (newPatient: PatientWithoutId): Patient => {
+const create = (newPatient: NewPatientEntry): Patient => {
     const id: string = uuid();
     const patient = {
         ...newPatient,
