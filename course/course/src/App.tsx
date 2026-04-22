@@ -25,7 +25,7 @@ interface CoursePartBackground extends CoursePartDescription {
   kind: "background"
 }
 
-type CoursePart = CoursePartBasic | CoursePartGroup | CoursePartBackground;
+export type CoursePart = CoursePartBasic | CoursePartGroup | CoursePartBackground;
 
 const App = () => {
   const courseName = "Half Stack application development";
@@ -68,7 +68,7 @@ const App = () => {
   return (
     <div>
       <Header courseName={courseName} />
-      <Content courses={courseParts} />
+      <Content courseParts={courseParts} />
       <Total totalExercises={totalExercises} />
     </div>
   );
