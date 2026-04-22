@@ -6,32 +6,36 @@ const assertNever = (value: never): never => {
     );
 }
 
-const Part = (props: CoursePart) => {
-    switch (props.kind) {
+interface PartProps {
+    coursePart: CoursePart
+}
+
+const Part = (props: PartProps) => {
+    switch (props.coursePart.kind) {
         case "basic":
             return (
             <p>
-                {props.name}
-                {props.exerciseCount}
-                {props.description}
+                {props.coursePart.name}
+                {props.coursePart.exerciseCount}
+                {props.coursePart.description}
             </p>)
         case "background":
             return (
             <p>
-                {props.name}
-                {props.exerciseCount}
-                {props.description}
-                {props.backgroundMaterial}
+                {props.coursePart.name}
+                {props.coursePart.exerciseCount}
+                {props.coursePart.description}
+                {props.coursePart.backgroundMaterial}
             </p>)
         case "group":
             return (
             <p>
-                {props.name}
-                {props.exerciseCount}
-                {props.groupProjectCount}                
+                {props.coursePart.name}
+                {props.coursePart.exerciseCount}
+                {props.coursePart.groupProjectCount}                
             </p>)
         default:
-            return assertNever(props)
+            return assertNever(props.coursePart)
     }
 }
 
