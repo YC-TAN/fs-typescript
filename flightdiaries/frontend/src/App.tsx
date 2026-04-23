@@ -23,11 +23,13 @@ const App = () => {
       const addedDiary = await diaryService.create(newDiary)
       setDiaries(prev => [...prev, addedDiary])
     } catch (error: unknown) {
-      if (axios.isAxiosError(error)) {
-        if (error?.response?.data?.error[0]?.message && typeof error?.response?.data?.error[0]?.message === 'string') {
-          console.log(error.response.data.error[0].message)
-          setMessage(`Error: ${error.response.data.error[0].message}`)
-        }      
+      if (axios.isAxiosError(error) && error.response) {
+        const errors = error.response.data?.error
+        if (Array.isArray(errors)){
+          const messages = errors.map((e: {message:string}) => e.message).join(', ')
+          setMessage(`Error: ${messages}`)
+        }
+        console.log(error.response.data)
     } else {
       console.error("Unknown error", error);
         setMessage(`Error: something went wrong...`)
