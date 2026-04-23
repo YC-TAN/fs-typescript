@@ -1,8 +1,8 @@
 import { useState } from "react"
-import { Visibility, Weather, type DiaryFormValues } from "../types"
+import { Visibility, Weather, type NewDiaryEntry } from "../types"
 
 interface DiaryFormProps {
-    addDiary: (newDiary: DiaryFormValues) => void
+    addDiary: (newDiary: NewDiaryEntry) => void
 }
 
 const DiaryForm = ({addDiary}: DiaryFormProps) => {
@@ -13,7 +13,7 @@ const DiaryForm = ({addDiary}: DiaryFormProps) => {
 
     const handleSubmit = (e: React.SyntheticEvent) => {
         e.preventDefault();
-        const newDiary = {
+        const newDiary: NewDiaryEntry = {
             date,
             visibility,
             weather,
@@ -33,7 +33,7 @@ const DiaryForm = ({addDiary}: DiaryFormProps) => {
             <div>
                 <label>
                     date:
-                    <input type="date" value={date} onChange={(e) => setDate(e.target.value)}/>
+                    <input type="date" name="date" value={date} onChange={(e) => setDate(e.target.value)}/>
                 </label>
             </div>
             <div>                
@@ -57,7 +57,7 @@ const DiaryForm = ({addDiary}: DiaryFormProps) => {
             <div>
                 <label>
                     comment:
-                    <input type="text" value={comment} onChange={(e) => setComment(e.target.value)} />
+                    <input type="text" name="comment" value={comment} onChange={(e) => setComment(e.target.value)} />
                 </label>
             </div>
             <button type='submit'>add</button>
