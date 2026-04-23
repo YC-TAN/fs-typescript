@@ -5,10 +5,10 @@ interface DiaryListProps {
     diaries: DiaryEntry[]
 }
 
-
 const DiaryList = ({diaries}: DiaryListProps) => {
   return (
     <div>
+        <h1>Diaries</h1>
         {diaries.map(d => (
             <Diary key={d.id} diary={d} />
         ))}
