@@ -1,12 +1,5 @@
 import { useState } from "react"
-import type { DiaryFormValues } from "../types"
-
-// interface DiaryFormValues {
-//     date: string,
-//     weather: string,
-//     visibility: string,
-//     comment?: string
-// }
+import { Visibility, Weather, type DiaryFormValues } from "../types"
 
 interface DiaryFormProps {
     addDiary: (newDiary: DiaryFormValues) => void
@@ -14,31 +7,9 @@ interface DiaryFormProps {
 
 const DiaryForm = ({addDiary}: DiaryFormProps) => {
     const [date, setDate] = useState('')
-    const [visibility, setVisibility] = useState('')
-    const [weather, setWeather] = useState('')
+    const [visibility, setVisibility] = useState<Visibility>(Visibility.Great)
+    const [weather, setWeather] = useState<Weather>(Weather.Sunny)
     const [comment, setComment] = useState('')
-
-    // const onVisibilityChange = (event: ChangeEvent<HTMLInputElement>) => {
-    //     event.preventDefault();
-    //     if ( typeof event.target.value === "string") {
-    //         const value = event.target.value;
-    //         const visibility = Object.values(Visibility).find(v => v.toString() === value);
-    //         if (visibility) {
-    //             setVisibility(visibility);
-    //         }
-    //     }
-    // }
-
-    // const onWeatherChange = (event: ChangeEvent<HTMLInputElement>) => {
-    //     event.preventDefault();
-    //     if ( typeof event.target.value === "string") {
-    //         const value = event.target.value;
-    //         const weather = Object.values(Weather).find(v => v.toString() === value);
-    //         if (weather) {
-    //             setWeather(weather);
-    //         }
-    //     }
-    // }
 
     const handleSubmit = (e: React.SyntheticEvent) => {
         e.preventDefault();
@@ -50,8 +21,8 @@ const DiaryForm = ({addDiary}: DiaryFormProps) => {
         }
         addDiary(newDiary);
         setDate('')
-        setWeather('')
-        setVisibility('')
+        setWeather(Weather.Sunny)
+        setVisibility(Visibility.Great)
         setComment('')
     }
 
@@ -62,20 +33,26 @@ const DiaryForm = ({addDiary}: DiaryFormProps) => {
             <div>
                 <label>
                     date:
-                    <input type="text" value={date} onChange={(e) => setDate(e.target.value)} />
+                    <input type="date" value={date} onChange={(e) => setDate(e.target.value)}/>
                 </label>
             </div>
-            <div>
-                <label>
-                    weather:
-                    <input type="text" value={weather} onChange={({target}) => setWeather(target.value)} />
-                </label>
+            <div>                
+                weather:
+                {Object.values(Weather).map(v => (
+                    <label key={v} >
+                        <input type="radio" name="weather" value={v} onChange={() => setWeather(v)} checked={v===weather}/>
+                        {v}
+                    </label>
+                ))}
             </div>
             <div>
-                <label>
-                    visibility:
-                    <input type="text" value={visibility} onChange={(e) => setVisibility(e.target.value)} />
-                </label>
+                visibility:
+                {Object.values(Visibility).map(v => (
+                    <label key={v} >
+                        <input type="radio" name="visibility" value={v} onChange={() => setVisibility(v)} checked={v===visibility}/>
+                        {v}
+                    </label>
+                ))}
             </div>
             <div>
                 <label>
