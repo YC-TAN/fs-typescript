@@ -14,8 +14,8 @@ const getAllPatientsWithoutSsn = (): NonSensitivePatient[] => {
 };
 
 const getById = (id: string): Patient | undefined => {
-    return patients.find(p => p.id === id)
-}
+    return patients.find(p => p.id === id);
+};
 
 const create = (newPatient: NewPatientEntry): Patient => {
     const id: string = uuid();
