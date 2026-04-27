@@ -70,6 +70,11 @@ export type Entry =
   | OccupationalHealthcareEntry
   | HealthCheckEntry;
 
+  // Define special omit for unions
+type UnionOmit<T, K extends string | number | symbol> = T extends unknown ? Omit<T, K> : never;
+
+export type EntryWithoutId = UnionOmit<Entry, 'id'>;
+
 export type NewPatientEntry = z.infer<typeof NewPatientSchema>;
 export interface Patient {
   id: string;
@@ -81,8 +86,3 @@ export interface Patient {
   entries: Entry[]
 }
 export type NonSensitivePatient = Omit<Patient, 'ssn' | 'entries'>;
-
-// Define special omit for unions
-type UnionOmit<T, K extends string | number | symbol> = T extends unknown ? Omit<T, K> : never;
-
-export type EntryWithoutId = UnionOmit<Entry, 'id'>;
