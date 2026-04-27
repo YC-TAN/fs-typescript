@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Box, Table, Button, TableHead, Typography, TableCell, TableRow, TableBody } from '@mui/material';
 import axios from 'axios';
 
@@ -18,6 +19,7 @@ const PatientListPage = ({ patients, setPatients } : Props ) => {
 
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [error, setError] = useState<string>();
+  const navigate = useNavigate()
 
   const openModal = (): void => setModalOpen(true);
 
@@ -65,7 +67,12 @@ const PatientListPage = ({ patients, setPatients } : Props ) => {
         </TableHead>
         <TableBody>
           {Object.values(patients).map((patient: Patient) => (
-            <TableRow key={patient.id}>
+            <TableRow 
+              key={patient.id} 
+              hover 
+              onClick={() => navigate(`patients/${patient.id}`) } 
+              sx={{ cursor: 'pointer' }}
+            >
               <TableCell>{patient.name}</TableCell>
               <TableCell>{patient.gender}</TableCell>
               <TableCell>{patient.occupation}</TableCell>
