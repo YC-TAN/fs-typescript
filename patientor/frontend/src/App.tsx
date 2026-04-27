@@ -23,7 +23,7 @@ const App = () => {
     void fetchPatientList();
   }, []);
 
-  const match = useMatch('/patients/:id')
+  const match = useMatch('/patients/:id');
   const patient = match
   ? patients.find(p => p.id === match.params.id)
   : null;
