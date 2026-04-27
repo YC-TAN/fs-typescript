@@ -2,7 +2,15 @@ import { Typography } from "@mui/material";
 import {WorkOutlined} from '@mui/icons-material';
 import {MedicalServices} from '@mui/icons-material';
 import {LocalHospital} from '@mui/icons-material';
-import type { Entry, Diagnosis } from "../../types";
+import {Favorite} from '@mui/icons-material';
+import { styled } from '@mui/material/styles';
+import type { 
+    Entry, 
+    Diagnosis, 
+    HealthCheckEntry, 
+    HospitalEntry, 
+    OccupationalHealthcareEntry 
+} from "../../types";
 
 const assertNever = (value: never): never => {
     throw new Error(
@@ -35,6 +43,17 @@ interface EntryProps extends BaseProps {
     entry: Entry | undefined | null;
 }
 
+const HEALTH_RATING_COLORS: Record<HealthCheckRating, string> = {
+    0: 'green',
+    1: 'yellow', 
+    2: 'magenta',
+    3: 'red',
+};
+
+const RatingIcon = styled(Favorite)<{iconcolor: string}>(({ iconcolor }) => ({
+    color: iconcolor
+}))
+
 const DiagnosisList = ({diagnosisCodes, diagnoses}: DiagnosisListProps) => {
     if (!diagnosisCodes || diagnosisCodes.length === 0) return null;
     return (
@@ -55,7 +74,7 @@ const HealthCheck = ({entry, diagnoses} : HealthCheckEntryProps) => {
                 {entry.date} <MedicalServices />
             </Typography>
             <Typography variant="body2"><i>{entry.description}</i></Typography>
-            <Typography>{entry.healthCheckRating}</Typography>
+            <RatingIcon iconcolor={HEALTH_RATING_COLORS[entry.healthCheckRating]} />
             <DiagnosisList diagnoses={diagnoses} diagnosisCodes={entry.diagnosisCodes} />                        
         </>
     )
