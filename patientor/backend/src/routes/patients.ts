@@ -1,12 +1,16 @@
 import express, {type Request, type Response} from 'express';
 import patientService from '../services/patientService.ts';
-import type { NonSensitivePatient, Patient, NewPatientEntry } from '../types.ts';
+import type { Patient, NewPatientEntry } from '../types.ts';
 import { newPatientParser } from '../middleware.ts';
 
 const router = express.Router();
 
-router.get('/', (_req, res: Response<NonSensitivePatient[]>) => {
-    return res.json(patientService.getAllPatientsWithoutSsn());
+// router.get('/', (_req, res: Response<NonSensitivePatient[]>) => {
+//     return res.json(patientService.getAllPatientsWithoutSsn());
+// });
+
+router.get('/', (_req, res: Response<Patient[]>) => {
+    return res.json(patientService.getAll());
 });
 
 router.get('/:id', (req, res: Response<Patient | {error: string}>) => {

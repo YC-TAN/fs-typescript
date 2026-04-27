@@ -2,6 +2,9 @@ import type {NonSensitivePatient, NewPatientEntry, Patient} from '../types.ts';
 import patients from '../data/patients.ts';
 import { v4 as uuid } from 'uuid';
 
+const getAll = (): Patient[] => {
+    return patients;
+};
 
 const getAllPatientsWithoutSsn = (): NonSensitivePatient[] => {
     return patients.map(({id, name, dateOfBirth, gender, occupation, }) => ({
@@ -29,6 +32,7 @@ const create = (newPatient: NewPatientEntry): Patient => {
 };
 
 export default {
+    getAll,
     getAllPatientsWithoutSsn,
     create,
     getById,
