@@ -1,33 +1,60 @@
-import { Typography, TextField, Button, Alert } from "@mui/material";
-import { EntryWithoutId } from "../../types"
-import React, { useState } from "react"
+import { useState, type SyntheticEvent, type ChangeEvent } from "react";
+import axios from "axios";
+import { 
+    Typography, 
+    TextField, 
+    Button,
+    Alert 
+} from "@mui/material";
+import { EntryWithoutId } from "../../types";
 
 interface EntryFormProps {
     addEntry: (values: EntryWithoutId) => Promise<void>,
-    error: string | null,
+    onCancel: () => void,
 }
 
-const EntryForm = ({addEntry, error}: EntryFormProps) => {
+const EntryForm = ({addEntry, onCancel}: EntryFormProps) => {
     const [date, setDate] = useState<string>('');
     const [description, setDescription] = useState<string>('');
     const [specialist, setSpecialist] = useState<string>('');
     const [healthCheckRating, setHealthCheckRating] = useState< 0 | 1 | 2 | 3 >(0);
     const [diagnosisCodes, setDiagnosisCodes] = useState<string>('');
+    const [error, setError] = useState<string | null>(null);
 
-    const onSubmit = (event: React.SyntheticEvent) => {
+    const onSubmit = async (event: SyntheticEvent) => {
         event.preventDefault();
-        const codes = diagnosisCodes.split(', ');
-        addEntry({
-            type: 'HealthCheck',
-            ...(diagnosisCodes && { codes }),
-            date,
-            description,
-            specialist,
-            healthCheckRating,        
-        });
+        try {
+            setError(null);
+            await addEntry({
+                type: 'HealthCheck',
+                ...(diagnosisCodes && { diagnosisCodes: diagnosisCodes.split(', ') }),
+                date,
+                description,
+                specialist,
+                healthCheckRating,        
+            });
+            setDate('');
+            setDescription('');
+            setSpecialist('');
+            setHealthCheckRating(0);
+            setDiagnosisCodes('');
+        } catch (e: unknown) {
+            if (axios.isAxiosError(e) && e.response) {
+                const errors = e.response.data?.error;
+                if (Array.isArray(errors)){
+                const messages = errors.map((e: {message:string}) => e.message).join(', ');
+                setError(`Error: ${messages}`);
+                }
+                console.log(e.response.data);   
+            } else {
+                console.error("Unknown error", e);
+                setError("Unknown error");
+            }
+        }
+        
     };
 
-    const handleRating = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
+    const handleRating = ({ target }: ChangeEvent<HTMLInputElement>) => {
         const value = Number(target.value);
         if (value === 0 || value === 1 || value === 2 || value === 3) {
             setHealthCheckRating(value);
@@ -86,12 +113,15 @@ const EntryForm = ({addEntry, error}: EntryFormProps) => {
                     gap: '5px'
                 }}>
                     <Button type="submit" variant="contained">ADD</Button>
-                    <Button type="reset" variant="outlined">CANCEL</Button>
+                    <Button 
+                        variant="outlined"
+                        onClick={onCancel}
+                    >CANCEL</Button>
                 </div>
             </div>
         </form>
     </div>
-  )
-}
+  );
+};
 
-export default EntryForm
+export default EntryForm;
