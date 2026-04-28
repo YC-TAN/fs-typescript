@@ -13,7 +13,7 @@ const getAll = (): Patient[] => {
 };
 
 const getAllPatientsWithoutSsn = (): NonSensitivePatient[] => {
-    return patients.map(({id, name, dateOfBirth, gender, occupation, }) => ({
+    return patients.map(({id, name, dateOfBirth, gender, occupation }) => ({
         id,
         name,
         dateOfBirth,
