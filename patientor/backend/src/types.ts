@@ -90,9 +90,9 @@ export interface Patient {
 export type NonSensitivePatient = Omit<Patient, 'ssn' | 'entries'>;
 
 const BaseEntrySchema = z.object({
-    description: z.string(),
+    description: z.string().min(1, "Description is required"),
     date: z.iso.date(),
-    specialist: z.string(),
+    specialist: z.string().min(1, "Specialist is required"),
     diagnosisCodes: z.string().array().optional(),
 });
 
