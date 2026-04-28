@@ -1,15 +1,19 @@
 import { Typography } from "@mui/material";
-import {WorkOutlined} from '@mui/icons-material';
-import {MedicalServices} from '@mui/icons-material';
-import {LocalHospital} from '@mui/icons-material';
-import {Favorite} from '@mui/icons-material';
+import {
+    WorkOutlined,
+    MedicalServices,
+    LocalHospital,
+    Favorite,
+} from '@mui/icons-material';
 import { styled } from '@mui/material/styles';
+
 import type { 
     Entry, 
     Diagnosis, 
     HealthCheckEntry, 
     HospitalEntry, 
-    OccupationalHealthcareEntry 
+    OccupationalHealthcareEntry, 
+    HealthCheckRating 
 } from "../../types";
 
 const assertNever = (value: never): never => {
@@ -52,7 +56,7 @@ const HEALTH_RATING_COLORS: Record<HealthCheckRating, string> = {
 
 const RatingIcon = styled(Favorite)<{iconcolor: string}>(({ iconcolor }) => ({
     color: iconcolor
-}))
+}));
 
 const DiagnosisList = ({diagnosisCodes, diagnoses}: DiagnosisListProps) => {
     if (!diagnosisCodes || diagnosisCodes.length === 0) return null;
@@ -64,8 +68,8 @@ const DiagnosisList = ({diagnosisCodes, diagnoses}: DiagnosisListProps) => {
                 </li>
             ))}
         </ul>
-    )
-}
+    );
+};
 
 const HealthCheck = ({entry, diagnoses} : HealthCheckEntryProps) => {
     return (
@@ -77,8 +81,8 @@ const HealthCheck = ({entry, diagnoses} : HealthCheckEntryProps) => {
             <RatingIcon iconcolor={HEALTH_RATING_COLORS[entry.healthCheckRating]} />
             <DiagnosisList diagnoses={diagnoses} diagnosisCodes={entry.diagnosisCodes} />                        
         </>
-    )
-}
+    );
+};
 
 const Hospital = ({entry, diagnoses} : HospitalEntryProps) => {
     return (
@@ -91,8 +95,8 @@ const Hospital = ({entry, diagnoses} : HospitalEntryProps) => {
             <Typography variant="body2">Discharge: {entry.discharge.date} {entry.discharge.criteria}</Typography>
             
         </>
-    )
-}
+    );
+};
 
 const OccupationalHealthcare = ({entry, diagnoses} : OccupationalHealthcareEntryProps) => {
     return (
@@ -105,8 +109,8 @@ const OccupationalHealthcare = ({entry, diagnoses} : OccupationalHealthcareEntry
             <Typography variant="body2">{entry.sickLeave && `Sick Leave: ${entry.sickLeave?.startDate} - ${entry.sickLeave?.endDate}`}</Typography>
             
         </>
-    )
-}
+    );
+};
 
 const EntryLine = ({entry, diagnoses} : EntryProps) => {
     if (!entry) return null;
