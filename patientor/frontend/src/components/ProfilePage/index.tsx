@@ -1,14 +1,30 @@
 import { Patient, Diagnosis, Entry } from "../../types";
+import { useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
+import patientService from '../../services/patients'
 import EntryLine from './EntryLine';
 import { Typography, Button } from "@mui/material";
 import {FemaleOutlined, MaleOutlined, QuestionMarkOutlined } from '@mui/icons-material';
 
 interface ProfileProps {
-    patient: Patient | undefined | null,
     diagnoses: Diagnosis[],
 }
 
-const ProfilePage = ({ patient, diagnoses } : ProfileProps) => {
+const ProfilePage = ({ diagnoses } : ProfileProps) => {
+
+    const { id } = useParams<{id: string}>();
+    const [patient, setPatient] = useState<Patient | null>(null);
+
+    useEffect(() => {
+        const fetchPatient = async (patientId: string) => {
+            const patientInDB = await patientService.getById(patientId);
+            setPatient(patientInDB);
+        };
+
+        if (id) {
+            void fetchPatient(id);
+        }
+    }, [id]);
     
     if (!patient) return null;
     if (patient === null) return (<Typography>Patient not found</Typography>);
