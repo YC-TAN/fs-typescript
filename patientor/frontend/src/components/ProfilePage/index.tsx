@@ -81,7 +81,11 @@ const ProfilePage = ({ diagnoses } : ProfileProps) => {
             }
             </div>
             {showForm 
-                ? <EntryForm addEntry={addEntry} onCancel={() => setShowForm(false)}/>
+                ? <EntryForm 
+                    addEntry={addEntry} 
+                    onCancel={() => setShowForm(false)}
+                    diagnoses={diagnoses}
+                    />
                 : <Button 
                     variant="contained" 
                     color='primary'
