@@ -34,7 +34,6 @@ interface HealthCheckEntryProps extends BaseProps {
     entry: HealthCheckEntry;
 }
 
-
 interface HospitalEntryProps extends BaseProps {
     entry: HospitalEntry;
 }
