@@ -7,7 +7,7 @@ interface HealthCheckFormProps {
     setHealthCheckRating: Dispatch<SetStateAction<HealthCheckRating>>
 }
 
-const HealthCheckRatingOptions: Record<number, string> = {
+const HealthCheckRatingOptions: Record<HealthCheckRating, string> = {
     0: 'Healthy',
     1: 'Low Risk',
     2: 'High Risk',
@@ -40,7 +40,7 @@ const HealthCheckForm = (
             )}
         </TextField>
     </>
-  )
-}
+  );
+};
 
-export default HealthCheckForm
+export default HealthCheckForm;
