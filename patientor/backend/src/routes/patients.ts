@@ -1,17 +1,17 @@
 import express, {type Request, type Response} from 'express';
 import patientService from '../services/patientService.ts';
-import type { Patient, NewPatientEntry, EntryWithoutId, Entry } from '../types.ts';
+import type { Patient, NewPatientEntry, EntryWithoutId, Entry, NonSensitivePatient } from '../types.ts';
 import { newPatientParser, newEntryParser } from '../middleware.ts';
 
 const router = express.Router();
 
-// router.get('/', (_req, res: Response<NonSensitivePatient[]>) => {
-//     return res.json(patientService.getAllPatientsWithoutSsn());
-// });
-
-router.get('/', (_req, res: Response<Patient[]>) => {
-    return res.json(patientService.getAll());
+router.get('/', (_req, res: Response<NonSensitivePatient[]>) => {
+    return res.json(patientService.getAllPatientsWithoutSsn());
 });
+
+// router.get('/', (_req, res: Response<Patient[]>) => {
+//     return res.json(patientService.getAll());
+// });
 
 router.get('/:id', (req, res: Response<Patient | {error: string}>) => {
     const patient = patientService.getById(req.params.id);
