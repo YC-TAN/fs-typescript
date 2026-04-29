@@ -10,7 +10,7 @@ export enum Gender {
   Other = "other"
 }
 
-const HealthCheckRating = {
+export const HealthCheckRating = {
     Healthy: 0,
     LowRisk: 1,
     HighRisk: 2,
@@ -19,12 +19,12 @@ const HealthCheckRating = {
 
 export type HealthCheckRating = typeof HealthCheckRating[keyof typeof HealthCheckRating];
 
-interface SickLeave {
+export interface SickLeave {
     startDate: string,
     endDate: string
 }
 
-interface Discharge {
+export interface Discharge {
     date: string,
     criteria: string,
 }
@@ -62,6 +62,7 @@ export type Entry =
 type UnionOmit<T, K extends string | number | symbol> = T extends unknown ? Omit<T, K> : never;
 
 export type EntryWithoutId = UnionOmit<Entry, 'id'>;
+export type EntryType = Entry['type']
 
 export interface Patient {
   id: string;
