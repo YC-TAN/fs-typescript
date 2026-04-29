@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Box, Table, Button, TableHead, Typography, TableCell, TableRow, TableBody } from '@mui/material';
+import { useNavigate, Link as RouterLink } from "react-router-dom";
+import { Box, Table, Button, TableHead, Typography, TableCell, TableRow, TableBody, Link } from '@mui/material';
 import axios from 'axios';
 
 import { PatientFormValues, NonSensitivePatient } from "../../types";
@@ -69,10 +69,17 @@ const PatientListPage = ({ patients, setPatients } : Props ) => {
             <TableRow 
               key={patient.id} 
               hover 
-              onClick={() => navigate(`patients/${patient.id}`) } 
-              sx={{ cursor: 'pointer' }}
+              // component={Link}
+              // to={`patients/${patient.id}`}
             >
-              <TableCell>{patient.name}</TableCell>
+              <TableCell>
+                  <Link 
+                      component={RouterLink} 
+                      to={`patients/${patient.id}`}
+                  >
+                      {patient.name}
+                  </Link>
+              </TableCell>
               <TableCell>{patient.gender}</TableCell>
               <TableCell>{patient.occupation}</TableCell>
               <TableCell>
