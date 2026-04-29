@@ -6,8 +6,16 @@ import {
     Button,
     Alert,
     MenuItem,
+    FormControl,
+    InputLabel,
+    Select,
+    SelectChangeEvent,
+    OutlinedInput,
+    Chip
 } from "@mui/material";
+import { Theme, useTheme } from '@mui/material/styles';
 import { 
+    Diagnosis,
     Discharge, 
     EntryType, 
     EntryWithoutId, 
@@ -22,6 +30,7 @@ import HospitalForm from "./HospitalForm";
 interface EntryFormProps {
     addEntry: (values: EntryWithoutId) => Promise<void>,
     onCancel: () => void,
+    diagnoses: Diagnosis[]
 }
 
 const EntryTypeLabel: Record<EntryType, string> = {
@@ -30,13 +39,24 @@ const EntryTypeLabel: Record<EntryType, string> = {
     OccupationalHealthcare: 'Occupational Healthcare',
 };
 
-const EntryForm = ({addEntry, onCancel}: EntryFormProps) => {
+function getStyles(code: string, diagnosisCodes: string[], theme: Theme) {
+  return {
+    fontWeight: diagnosisCodes.includes(code)
+      ? theme.typography.fontWeightBold
+      : theme.typography.fontWeightRegular,
+    backgroundColor: diagnosisCodes.includes(code) 
+        ? '#e3f2fd'
+        : 'transparent',
+  };
+}
+
+const EntryForm = ({addEntry, onCancel, diagnoses}: EntryFormProps) => {
     // Base form
     const [type, setType] = useState<EntryType>('HealthCheck');
     const [date, setDate] = useState<string>('');
     const [description, setDescription] = useState<string>('');
     const [specialist, setSpecialist] = useState<string>('');    
-    const [diagnosisCodes, setDiagnosisCodes] = useState<string>('');
+    const [diagnosisCodes, setDiagnosisCodes] = useState<string[]>([]);
     const [error, setError] = useState<string | null>(null);
 
     // Health Check
@@ -48,6 +68,8 @@ const EntryForm = ({addEntry, onCancel}: EntryFormProps) => {
 
     // Hospital
     const [discharge, setDischarge] = useState<Discharge | null>(null);
+
+    const theme = useTheme();
 
     const handleTypeChange = (event: ChangeEvent<HTMLInputElement>) => {
         const value = event.target.value;
@@ -80,6 +102,11 @@ const EntryForm = ({addEntry, onCancel}: EntryFormProps) => {
         }
     };
 
+    const handleCodeChange = (event: SelectChangeEvent<string[]>) => {
+        const value = event.target.value;
+        setDiagnosisCodes(typeof value === 'string' ? value.split(',') : value);
+    };
+
     const onSubmit = async (event: SyntheticEvent) => {
         event.preventDefault();
 
@@ -88,7 +115,7 @@ const EntryForm = ({addEntry, onCancel}: EntryFormProps) => {
                 description,
                 date,
                 specialist,
-                ...(diagnosisCodes && { diagnosisCodes: diagnosisCodes.split(', ') }),
+                ...(diagnosisCodes.length > 0 && { diagnosisCodes }),
             };
             let newEntry: EntryWithoutId;
             setError(null);
@@ -125,7 +152,7 @@ const EntryForm = ({addEntry, onCancel}: EntryFormProps) => {
             setDescription('');
             setSpecialist('');
             setHealthCheckRating(0);
-            setDiagnosisCodes('');
+            setDiagnosisCodes([]);
             setDischarge(null);
             setSickLeave(null);
             setEmployerName('');
@@ -196,12 +223,33 @@ const EntryForm = ({addEntry, onCancel}: EntryFormProps) => {
                     onChange={({target}) => setSpecialist(target.value)}
                 />
                 {renderForm()}
-                <TextField
-                    fullWidth
-                    label="Diagnosis Codes (comma separated)"
-                    value={diagnosisCodes}
-                    onChange={({target}) => setDiagnosisCodes(target.value)}
-                />
+                <FormControl fullWidth>
+                    <InputLabel id="diagnosis-code">Diagnosis codes</InputLabel>
+                    <Select
+                        labelId="diagnosis-code"
+                        multiple
+                        value={diagnosisCodes}
+                        onChange={handleCodeChange}
+                        renderValue={(selected) => (
+                                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
+                                            {selected.map((code) => (
+                                                <Chip key={code} label={code} size="small" />
+                                            ))}
+                                        </div>
+                                    )}
+                        input={<OutlinedInput label="Diagnosis codes" />}
+                    >
+                    {diagnoses.map((d: Diagnosis) => (
+                        <MenuItem
+                        key={d.code}
+                        value={d.code}
+                        style={getStyles(d.code, diagnosisCodes, theme)}
+                        >
+                        {d.code} - {d.name}
+                        </MenuItem>
+                    ))}
+                    </Select>
+                </FormControl>
                 <div style={{
                     display: "flex",
                     gap: '5px'
