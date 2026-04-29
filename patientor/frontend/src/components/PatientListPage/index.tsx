@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate, Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 import { Box, Table, Button, TableHead, Typography, TableCell, TableRow, TableBody, Link } from '@mui/material';
 import axios from 'axios';
 
@@ -19,7 +19,6 @@ const PatientListPage = ({ patients, setPatients } : Props ) => {
 
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [error, setError] = useState<string>();
-  const navigate = useNavigate();
 
   const openModal = (): void => setModalOpen(true);
 
