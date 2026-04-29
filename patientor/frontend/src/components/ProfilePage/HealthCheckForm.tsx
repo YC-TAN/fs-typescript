@@ -33,7 +33,7 @@ const HealthCheckForm = (
     return (
     <>
         <FormControl fullWidth>
-            <InputLabel id="rating">Age</InputLabel>
+            <InputLabel id="rating">Health Check Rating (0-3) *</InputLabel>
             <Select
                 labelId="rating"
                 value={healthCheckRating}
